@@ -1,0 +1,301 @@
+@font-face {
+  font-family: "Gepestev";
+  src: url("../fonts/Gepestev-nRJgO.ttf");
+}
+
+@font-face {
+  font-family: "gg sans";
+  src: url("../fonts/ggsans-Normal.ttf");
+}
+
+:root {
+  --color-dark-purple: #0B0B28;
+  --color-bright-pink: #FF2B7F;
+  --color-light-purple: #342E68;
+  --color-bright-light-purple: #625BA1;
+  --color-bright-gold: #FFCD00;
+  --color-very-bright-blue: #C6C5F7;
+  --color-discord-channel-name-background: #2B2D31;
+  --color-discord-channel-name: #949B99;
+  --color-discord-channel-name-background--selected: #404249;
+
+  --table-row-gap: 0.4em;
+  --table-button-size: 1.3em;
+}
+
+html {
+  font-size: 16px;
+  height: 100%;
+}
+
+.navbar {
+  background-color: var(--color-dark-purple);
+  border-bottom: solid var(--color-bright-pink) 1px;
+  height: 4em;
+  justify-content: space-between;
+}
+
+.navbar-brand {
+  color: var(--color-very-bright-blue);
+}
+
+.nav-link {
+  color: var(--color-bright-gold);
+  display: flex;
+}
+
+.nav-link--logout {
+  background-image: url(../images/exit.png);
+  background-size: cover;
+  max-width: 2em;
+  max-height: 2em;
+  height: 2em;
+  width: 2em;
+}
+
+body {
+  height: 100%;
+  background-image: url(../images/background.jpg);
+  background-repeat: repeat-y;
+  background-size: cover;
+  background-position: center center;
+  font-family: "Gepestev";
+}
+
+main {
+  margin-left: auto;
+  margin-right: auto;
+  background-color: var(--color-light-purple);
+  height: calc(100% - 8em - 2rem);
+  max-width: 70%;
+  border: solid var(--color-bright-pink) 1px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+main > * {
+  width: 100%;
+}
+
+video {
+  margin: auto 0;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  border-top: solid var(--color-bright-pink) 1px;
+  background-color: var(--color-dark-purple);
+  height: 4em;
+  width: 100%;
+  margin: 0;
+  margin-top: 1rem;
+  padding: 0 3em;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  color: var(--color-bright-gold)
+}
+
+/* Buttons */
+.btn--custom {
+  margin-top: 0.5em;
+  width: fit-content;
+  color: var(--color-bright-gold);
+  border: solid var(--color-bright-pink) 1px;
+  border-radius: 0;
+  transition: color 0.3s, background-image 0.3s;
+}
+
+.btn--custom--secondary {
+  border: solid var(--color-bright-light-purple) 1px;
+  color: var(--color-very-bright-blue);
+}
+
+.btn--custom--big {
+  font-size: 2em;
+  height: 2em;
+}
+
+.btn--custom:hover {
+  color: var(--color-light-purple);
+  background: rgb(250,218,3);
+  background: linear-gradient(90deg, rgba(250,218,3,1) 0%, rgba(147,3,208,1) 100%);
+}
+
+
+/* FILE UPLOAD */
+#uploadForm {
+  padding: 2em;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#dropArea {
+  border: 2px dashed var(--color-bright-pink);
+  padding: 2em;
+  text-align: center;
+  cursor: pointer;
+  height: 60%;
+  width: 100%;
+  background-image: url(../images/empty.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+form p {
+  color: var(--color-bright-gold);
+  font-size: 2em;
+}
+
+#dropdown, #discordChannelsSelect {
+  margin-top: 1em;
+  padding: 6px 3px;
+  width: fit-content;
+  height: 2.5em;
+  border-radius: 4px;
+  background-color: var(--color-discord-channel-name-background--selected);
+  color: white;
+  font-weight: 500;
+  font-family: "gg sans";
+}
+
+#dropdown option, #discordChannelsSelect option {
+  background-color: var(--color-discord-channel-name-background);
+  color: var(--color-discord-channel-name);
+}
+
+#selectedFile {
+  color: var(--color-bright-gold);
+}
+
+#uploadResult {
+  margin-top: 1em;
+  color: var(--color-bright-gold);
+}
+
+.option-hover {
+  background-color: var(--color-discord-channel-name-background--selected);
+  color: white;
+}
+
+/* File management */
+.filetable-title {
+  margin: 0.5em 0;
+  width: 95%;
+  color: var(--color-very-bright-blue);
+}
+
+.filetable {
+  width: 95%;
+}
+.filetable__row {
+  border-bottom: solid 1px var(--color-bright-light-purple);
+  color: var(--color-bright-gold);
+  margin-bottom: 50px;
+}
+
+.filetable__row--header {
+  border-bottom-color: var(--color-bright-pink);
+  color: var(--color-very-bright-blue);
+  font-size: large;
+}
+
+.filetable__row td {
+  padding-top: var(--table-row-gap);
+  padding-bottom: var(--table-row-gap);
+}
+
+.filetable__row--clickable {
+  cursor: pointer;
+}
+
+.filetable__row--clickable:hover {
+  background-color: var(--color-bright-light-purple);
+}
+
+.filetable__row__options {
+  display: flex;
+  
+}
+
+.filetable__row__options__button {
+  margin-right: 1em;
+  max-width: var(--table-button-size);
+  max-height: var(--table-button-size);
+  height: var(--table-button-size);
+  width: var(--table-button-size);
+  filter: invert(86%) sepia(40%) saturate(5060%) hue-rotate(358deg) brightness(109%) contrast(111%);
+}
+
+.filetable__row__options__button--delete { content: url(../images/delete.svg); }
+.filetable__row__options__button--resend { content: url(../images/reload.svg); }
+
+.filetable__row__options__button:hover {
+  filter: invert(33%) sepia(96%) saturate(3508%) hue-rotate(318deg) brightness(100%) contrast(102%);
+}
+
+/* Modal dialog window */
+.modal-content {
+  border: solid 1px var(--color-bright-pink);
+  color: var(--color-bright-gold);
+  background-color: var(--color-light-purple);
+  border-radius: 0;
+}
+
+.modal-header {
+  border-bottom-color: var(--color-bright-pink);
+}
+
+.modal-filename {
+  color: var(--color-very-bright-blue);
+}
+
+
+.modal-footer {
+  border-top: none;
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 550px) {
+  #dropdown {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 575px) {
+  .navbar-brand {
+    margin-left: var(--bs-gutter-x,.75rem);
+  }
+
+  .navbar-toggler-icon {
+    content: url(../images/menu.svg);
+  }
+  
+  .navbar-collapse {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    background-color: var(--color-bright-light-purple);
+    padding: 0 var(--bs-gutter-x,.75rem);
+    padding-bottom: 0.5em;
+  }
+  
+  .container-fluid {
+    padding: 0;
+    gap: 1rem;
+  }
+}

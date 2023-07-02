@@ -1,0 +1,118 @@
+﻿@using FileUploadWeb.Enums
+@model FileManagementModel
+
+@if (Model.Files.Any(file => file.Type == Types.Video))
+{
+    <h2 class="filetable-title">Videos</h2>
+    <table class="filetable">
+        <tr class="filetable__row filetable__row--header">
+            <th>Upload Time</th>
+            <th>File Name</th>
+            <th>File Type</th>
+            <th>Options</th>
+        </tr>
+        @foreach (var videoFile in Model.Files.Where(file => file.Type == Types.Video))
+        {
+            <tr class="filetable__row filetable__row--clickable">
+                <td onclick="window.location.href = '@videoFile.ShareLink';">@videoFile.UploadTime.ToString("dd-MM-yy HH:mm")</td>
+                <td onclick="window.location.href = '@videoFile.ShareLink';">@videoFile.FileName</td>
+                <td onclick="window.location.href = '@videoFile.ShareLink';">@videoFile.Type</td>
+                <td>
+                    <div class="filetable__row__options">
+                        <div onclick="confirmDelete('@videoFile.FileName')" class="filetable__row__options__button filetable__row__options__button--delete"></div>
+                        <div onclick="confirmResend('@videoFile.FileName')" class="filetable__row__options__button filetable__row__options__button--resend"></div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirm Action</h5>
+            </div>
+            <div class="modal-body" id="confirmModalBody"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn--custom btn--custom--secondary" id="cancelModalButton" onclick="closeModal()">Cancel</button>
+                <button type="button" class="btn btn--custom" id="confirmModalBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function closeModal() {
+        $('#confirmModal').modal('hide');
+    }
+
+    function confirmDelete(filename) {
+        var confirmMessage = "Delete file '<span class='modal-filename'>" + filename + "</span>'?";
+        $('#confirmModalBody').html(confirmMessage);
+        $('#confirmModalBtn').attr('onclick', "deleteFile('" + filename + "')");
+        $('#confirmModal').modal('show');
+    }
+    
+    function confirmResend(filename) {
+        var discordChannels = @Html.Raw(Json.Serialize(Model.DiscordChannels.ToList()));
+        var selectHtml = '<select id="discordChannelsSelect">';
+        for (var i = 0; i < discordChannels.length; i++) {
+            var channel = discordChannels[i];
+            selectHtml += '<option value="' + channel.id + '">' + channel.name + '</option>';
+        }
+        selectHtml += '</select>';
+
+        var confirmMessage = "Resend file '<span class='modal-filename'>" + filename + "</span>'?<br><br>Select Discord channel:<br>" + selectHtml;
+        $('#confirmModalBody').html(confirmMessage);
+        $('#confirmModalBtn').attr('onclick', "resendLink('" + filename + "')");
+        $('#confirmModal').modal('show');
+    }
+
+    function deleteFile(filename) {
+        closeModal();
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/FilePage/DeleteFile", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        var data = "fileName=" + encodeURIComponent(filename);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    // Úspěšně dokončeno, provedte požadované akce
+                } else {
+                    // Chyba při provedení požadavku, zpracujte ji
+                }
+            }
+        };
+
+        xhr.send(data);
+    }
+
+    function resendLink(filename) {
+        var channelId = $('#discordChannelsSelect').val();
+        closeModal();
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/FilePage/ResendLink", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        var data = "fileName=" + encodeURIComponent(filename) + "&channelId=" + encodeURIComponent(channelId);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    // Úspěšně dokončeno, provedte požadované akce
+                } else {
+                    // Chyba při provedení požadavku, zpracujte ji
+                }
+            }
+        };
+
+        xhr.send(data);
+    }
+
+</script>
+

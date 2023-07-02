@@ -1,0 +1,95 @@
+﻿<form id="uploadForm" method="post" action="/FileUpload/Upload" enctype="multipart/form-data" onsubmit="AJAXSubmit(this);return false;">
+    <div id="dropArea">
+        <p>Drop files here.</p>
+        <input id="file" type="file" name="file" style="display: none;" />
+        <div id="selectedFile"></div>
+    </div>
+    @Html.AntiForgeryToken()
+    
+    <select id="dropdown" name="selectedValue">
+        @foreach (var channel in ViewBag.DiscordChannels)
+        {
+            <option value="@channel.Id"># @channel.Name</option>
+        }
+    </select>
+
+    <input class="btn btn--custom btn--custom--big" type="submit" value="UPLOAD" />
+
+    <output id="uploadResult" form="uploadForm" name="result"></output>
+
+</form>
+
+@section Scripts {
+    <script>
+        "use strict";
+
+        async function AJAXSubmit(oFormElement) {
+            const formData = new FormData(oFormElement);
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            const dropdownValue = document.getElementById("dropdown").value;
+
+            try {
+                const response = await fetch(oFormElement.action, {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': token,
+                        'SelectedValue': dropdownValue
+                    },
+                    body: formData
+                });
+
+                if (response.status === 201) {
+                    oFormElement.elements.namedItem("result").value = 'Result: Success';
+                }
+                else {
+                    oFormElement.elements.namedItem("result").value = 'Result: Error(' + response.result + ')';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    </script>
+
+
+
+    <script>
+        var dropArea = document.getElementById('dropArea');
+        var selectedFile = document.getElementById('selectedFile');
+
+        dropArea.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            dropArea.style.backgroundColor = '#5e54b4';
+        });
+
+        dropArea.addEventListener('dragleave', function () {
+            dropArea.style.backgroundColor = 'transparent';
+        });
+
+        dropArea.addEventListener('drop', function (e) {
+            e.preventDefault();
+            dropArea.style.backgroundColor = 'transparent';
+            var fileInput = document.getElementById('file');
+            fileInput.files = e.dataTransfer.files;
+
+            if (fileInput.files.length > 0) {
+                selectedFile.innerText = 'Selected file: ' + fileInput.files[0].name;
+            } else {
+                selectedFile.innerText = '';
+            }
+        });
+
+        dropArea.addEventListener('click', function () {
+            var fileInput = document.getElementById('file');
+            fileInput.click();
+        });
+
+        var fileInput = document.getElementById('file');
+        fileInput.addEventListener('change', function () {
+            if (fileInput.files.length > 0) {
+                selectedFile.innerText = 'Selected file: ' + fileInput.files[0].name;
+            } else {
+                selectedFile.innerText = '';
+            }
+        });
+    </script>
+}

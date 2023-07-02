@@ -1,0 +1,15 @@
+﻿@model VideoFile
+
+<head>
+    <meta property="og:video:type" content="text/html">
+    <meta property="og:video:url" content="@Model.FileLink">
+    <meta property="og:video:height" content="@Model.VideoHeight">
+    <meta property="og:video:width" content="@Model.VideoWidth">
+    <meta property="og:type" content="video.other">
+</head>
+
+
+<video width="1280" height="720" controls>
+    <source src="@Model.FileLink" type="video/@Model.FileFormat">
+</video>
+
